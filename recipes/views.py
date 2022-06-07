@@ -6,8 +6,8 @@ from django.views.generic.list import ListView
 
 from recipes.forms import RatingForm
 
-# from recipes.forms import RecipeForm
 from recipes.models import Recipe
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def log_rating(request, recipe_id):
@@ -39,21 +39,23 @@ class RecipeDetailView(DetailView):
         return context
 
 
-class RecipeCreateView(CreateView):
+class RecipeCreateView(LoginRequiredMixin,CreateView):
     model = Recipe
     template_name = "recipes/new.html"
     fields = ["name", "author", "description", "image"]
     success_url = reverse_lazy("recipes_list")
 
 
-class RecipeUpdateView(UpdateView):
+class RecipeUpdateView(LoginRequiredMixin,UpdateView):
     model = Recipe
     template_name = "recipes/edit.html"
     fields = ["name", "author", "description", "image"]
     success_url = reverse_lazy("recipes_list")
 
 
-class RecipeDeleteView(DeleteView):
+class RecipeDeleteView(LoginRequiredMixin,DeleteView):
     model = Recipe
     template_name = "recipes/delete.html"
     success_url = reverse_lazy("recipes_list")
+
+
